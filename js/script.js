@@ -32,7 +32,7 @@ let $matchSplit = $matchCount / 10;
 // round the number up
 let $matchSection = Math.ceil($matchSplit);
 
-const slicePage = (start,stop) => {
+let slicePage = (start,stop) => {
   // hide all results by default
   $('.match').hide();
   // display initial selection
@@ -42,15 +42,15 @@ const slicePage = (start,stop) => {
 // display results 1-10 onLoad
 slicePage(0,10);
 
-const createLinks = num => {
+let createLinks = num => {
   // create pagination html
-  let linkHTML = `
+  var linkHTML = `
   <ul>
     <li>
       <a class="active" href="#1">1</a>
     </li>`;
   // create parameter for number of links
-  for (let i = 2; i <= num; i++) {
+  for (var i = 2; i <= num; i++) {
     linkHTML += `
     <li>
       <a href="#${i}">${i}</a>
@@ -65,12 +65,11 @@ const createLinks = num => {
 // create page links onLoad
 createLinks($matchSection);
 
-const searchStu = () => {
+let searchStu = () => {
   // loop through each list item
-  $stuItem.each(function(){
+  $stuItem.each( function() {
     // monitor search input
-    let $inputVal = $input.val();
-
+    var $inputVal = $input.val();
     // check if list item matches search input & respond
     if( $(this).text().match($inputVal) ) { $(this).addClass('match').show(); }
     else { $(this).removeClass('match').hide(); }
@@ -115,7 +114,7 @@ $('button').on('click',() => {
 // monitor page links & respond on click
 $('.pagination').on('click','ul li a',() => {
 
-  const $this = $(this);
+  const $this = $(event.target);
   const $num = $this.html();
   const $others = $this.parents().siblings().children('a');
 
