@@ -1,8 +1,7 @@
-
-const $page = $('.page');
-const $pageHead = $('.page-header');
-const $stuList = $('.student-list');
-const $stuItem = $('.student-item');
+const $page = $(".page");
+const $pageHead = $(".page-header");
+const $stuList = $(".student-list");
+const $stuItem = $(".student-item");
 const stuSearch = `
   <div class="student-search">
     <input placeholder="Search for students...">
@@ -18,31 +17,31 @@ $stuList.prepend(zeroMsg);
 // add pagination area to page end
 $page.append(pagina);
 // add match class to all student items
-$stuItem.addClass('match');
+$stuItem.addClass("match");
 
-const $pagina = $('.pagination');
-const $zeroMsg = $('.zeroMsg');
-const $button = $('button');
-const $input = $('input');
+const $pagina = $(".pagination");
+const $zeroMsg = $(".zeroMsg");
+const $button = $("button");
+const $input = $("input");
 
 // calculate search results
-let $matchCount = $('.match').length;
+let $matchCount = $(".match").length;
 // calculate number of pages returned
 let $matchSplit = $matchCount / 10;
 // round the number up
 let $matchSection = Math.ceil($matchSplit);
 
-let slicePage = (start,stop) => {
+let slicePage = (start, stop) => {
   // hide all results by default
-  $('.match').hide();
+  $(".match").hide();
   // display initial selection
-  $('.match').slice(start,stop).show();
-}
+  $(".match").slice(start, stop).show();
+};
 
 // display results 1-10 onLoad
-slicePage(0,10);
+slicePage(0, 10);
 
-let createLinks = num => {
+let createLinks = (num) => {
   // create pagination html
   var linkHTML = `
   <ul>
@@ -60,79 +59,80 @@ let createLinks = num => {
 
   // output html to pagination area
   $pagina.html(linkHTML);
-}
+};
 
 // create page links onLoad
 createLinks($matchSection);
 
 let searchStu = () => {
   // loop through each list item
-  $stuItem.each( function() {
+  $stuItem.each(function () {
     // monitor search input
     var $inputVal = $input.val();
     // check if list item matches search input & respond
-    if( $(this).text().match($inputVal) ) { $(this).addClass('match').show(); }
-    else { $(this).removeClass('match').hide(); }
+    if ($(this).text().match($inputVal)) {
+      $(this).addClass("match").show();
+    } else {
+      $(this).removeClass("match").hide();
+    }
   });
-}
+};
 
-$('button').on('click',() => {
-
+$("button").on("click", () => {
   // empty zero message contents by default
-  $zeroMsg.html('');
+  $zeroMsg.html("");
 
   // search all list items
   searchStu();
 
   // update match variables
-  let $matchCount = $('.match').length;
+  let $matchCount = $(".match").length;
   let $matchSplit = $matchCount / 10;
   let $matchSection = Math.ceil($matchSplit);
 
   // check variables update correctly
   console.log($matchCount);
 
-  if( $matchCount == 0 ) {
+  if ($matchCount == 0) {
     // if no matches, display fallback message
     const noMatches = `Sorry, no matches this time`;
     $zeroMsg.html(noMatches);
     // & clear page links
-    $pagina.html('');
+    $pagina.html("");
   }
 
-  if( $matchCount > 0 ) {
+  if ($matchCount > 0) {
     // if matched, create pagination
     createLinks($matchSection);
   }
 
-  if( $matchCount >= 10 ) {
+  if ($matchCount >= 10) {
     // display results 1-10 only
-    slicePage(0,10);
+    slicePage(0, 10);
   }
 });
 
 // monitor page links & respond on click
-$('.pagination').on('click','ul li a',() => {
-
-  const $this = $(event.target);
+$(".pagination").on("click", "ul li a", function () {
+  const $this = $(this);
   const $num = $this.html();
-  const $others = $this.parents().siblings().children('a');
+  const $others = $this.parents().siblings().children("a");
 
   // create page slice from link number
-  let start = ($num-1)*10;
-  let stop = $num*10;
+  let start = ($num - 1) * 10;
+  let stop = $num * 10;
 
   // check slice calculation
-  console.log(start)
-  console.log(stop)
+  console.log(start);
+  console.log(stop);
 
   // remove active style by default
-  $others.removeClass('active');
+  $others.removeClass("active");
   // add to current selection
-  $this.addClass('active');
+  $this.addClass("active");
 
   // only add functionality, if 10+ results returned
-  if( $matchCount >= 10 ) {
-    slicePage(start,stop);
+  if ($matchCount >= 10) {
+    slicePage(start, stop);
   }
 });
